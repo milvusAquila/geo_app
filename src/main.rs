@@ -4,10 +4,10 @@
 
 // mod define_frames;
 // use crate::define_frames::*;
-// commentaire
 
 use eframe::{self, App, Frame};
-use egui::{self, ScrollArea, Vec2, FontDefinitions, FontData, FontFamily, Color32, Label, Layout, Hyperlink, Separator};
+use egui::{self, ScrollArea, Vec2, FontDefinitions, FontData, FontFamily, Color32, Label, Layout, Hyperlink, Separator, RichText, FontId};
+
 
 struct CardData { title: String, desc: String, url: String }
 struct Headlines { articles: Vec<CardData> }
@@ -18,19 +18,15 @@ impl Headlines {
             desc: format!("description{a}"),
             url: format!("https://examples.com/{a}")
         });
-        Headlines {
-            articles: Vec::from_iter(iter)
-        }
+        Headlines { articles: Vec::from_iter(iter) }
      }
-   fn _configure_font(&self, ctx: egui::Context) {
+   fn configure_font(&self) /* -> FontId  */{
         let mut font_def = FontDefinitions::default();
         font_def.font_data.insert("LiberationSerif".to_owned(), FontData::from_static(include_bytes!("../fonts/LiberationSerif.ttf")));
         font_def.families.get_mut(&FontFamily::Proportional).unwrap().insert(0, "LiberationSerif".to_owned());
-        ctx.set_fonts(font_def);
-        
     }
     fn render_new_cards(&self, ui: &mut eframe::egui::Ui) {
-        for a in &self.articles{
+        for a in &self.articles {
             ui.add_space(PADDING);
             let title = Label::new(format!("Play {}", a.title));
             ui.add(title);
