@@ -1,5 +1,5 @@
 use eframe::{self, App, Frame};
-use egui::{self, ScrollArea, FontFamily, Color32, Label, Layout, Hyperlink, Separator, RichText, FontId, TopBottomPanel, Button};
+use egui::{self, ScrollArea, FontFamily, Color32, Label, Layout, Hyperlink, Separator, RichText, FontId, TopBottomPanel, Button, TextBuffer};
 
 const PADDING: f32 = 5.0;
 pub struct CardData { title: String, desc: String, url: String }
@@ -59,6 +59,25 @@ impl App for Headlines {
             ScrollArea::new([false, true]).show(ui, |ui| {
                 self.render_new_cards(ui)
             })
+        });
+    }
+}
+
+
+pub struct Root;
+impl Root {
+    pub fn new() -> Root {
+        Root
+    }
+}
+impl App for Root {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut Frame) {
+        TopBottomPanel::top("Menu").show(ctx, |ui| {
+            egui::menu::menu_button(ui, "File", |ui| {
+                if ui.add(Button::new("Quit")).clicked() {
+                    frame.close()
+                }
+            });
         });
     }
 }
