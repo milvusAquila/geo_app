@@ -1,11 +1,11 @@
 use eframe::{self, App, Frame};
-use egui::{self, ScrollArea, FontFamily, Color32, Label, Layout, Hyperlink, Separator, RichText, FontId, TopBottomPanel, Button, TextBuffer};
+use egui::*;
 
 const PADDING: f32 = 5.0;
 pub struct CardData { title: String, desc: String, url: String }
 pub struct Headlines { articles: Vec<CardData> }
 impl Headlines {
-    pub fn new() -> Headlines {
+    pub fn _new() -> Headlines {
         let iter = (0..20).map(|a: i32| CardData {
             title: format!("title{a}"),
             desc: format!("description{a}"),
@@ -18,7 +18,6 @@ impl Headlines {
             ui.add_space(PADDING);
 
             let title = RichText::new(format!("Play {}", a.title))
-                .font(FontId { size: 32.0, family: FontFamily::Proportional })
                 .color(Color32::GREEN);
             ui.label(title);
             ui.add_space(PADDING);
@@ -63,7 +62,6 @@ impl App for Headlines {
     }
 }
 
-
 pub struct Root;
 impl Root {
     pub fn new() -> Root {
@@ -73,10 +71,29 @@ impl Root {
 impl App for Root {
     fn update(&mut self, ctx: &egui::Context, frame: &mut Frame) {
         TopBottomPanel::top("Menu").show(ctx, |ui| {
-            egui::menu::menu_button(ui, "File", |ui| {
-                if ui.add(Button::new("Quit")).clicked() {
-                    frame.close()
-                }
+            egui::menu::bar(ui, |ui| {
+                egui::menu::menu_button(ui, "File", |ui| {
+                    if ui.add(Button::new("New")).clicked() {
+                        // New file
+                    }
+                    if ui.add(Button::new("Open")).on_hover_text("Open a file").clicked() {
+                        // Open file
+                    }
+                    if ui.add(Button::new("Save")).clicked() {
+                        // Save file
+                    }
+                    if ui.add(Button::new("Quit")).clicked() {
+                        frame.close()
+                    }
+                });
+                egui::menu::menu_button(ui, "Edit", |ui| {
+                    egui::widgets::global_dark_light_mode_buttons(ui)
+                });
+            });
+        });
+        CentralPanel::default().show(ctx, |ui| {
+            egui::Frame::dark_canvas(ui.style()).show(ui, |_| {
+
             });
         });
     }
