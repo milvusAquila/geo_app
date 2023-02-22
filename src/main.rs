@@ -8,10 +8,10 @@ mod graphics;
 fn main() -> Result<(), eframe::Error> {
     let mut win_option = eframe::NativeOptions::default();
     win_option.initial_window_size = Some(Vec2::new(600., 800.));
-    eframe::run_native("Geo_app", win_option, Box::new(|_| Box::new(graphics::Root::new())))
+    eframe::run_native("Geo_app", win_option, Box::new(|_| Box::new(graphics::Root)))
 }
 
-fn custom_window_frame(ctx: &egui::Context, frame: &mut eframe::Frame, title: &str, add_contents: impl FnOnce(&mut egui::Ui)) {
+/* fn custom_window_frame(ctx: &egui::Context, frame: &mut eframe::Frame, title: &str, add_contents: impl FnOnce(&mut egui::Ui)) {
     use egui::*;
     let panel_frame = egui::Frame {
         fill: ctx.style().visuals.window_fill(),
@@ -71,39 +71,12 @@ fn title_bar_ui(ui: &mut egui::Ui, frame: &mut eframe::Frame, title_bar_rect: ef
             ui.spacing_mut().item_spacing.x = 0.0;
             ui.visuals_mut().button_frame = false;
             ui.add_space(8.0);
-            close_maximize_minimize(ui, frame);
         });
     });
-}
-/// Show some close/maximize/minimize buttons for the native window.
-fn close_maximize_minimize(ui: &mut egui::Ui, frame: &mut eframe::Frame) {
-    use egui::{Button, RichText};
-    let button_height = 12.0;
-    let close_response = ui
-        .add(Button::new(RichText::new("❌").size(button_height)))
-        .on_hover_text("Close the window");
-    if close_response.clicked() {
-        frame.close();
-    }
-    if frame.info().window_info.maximized {
-        let maximized_response = ui
-            .add(Button::new(RichText::new("🗗").size(button_height)))
-            .on_hover_text("Restore window");
-        if maximized_response.clicked() {
-            frame.set_maximized(false);
-        }
-    } else {
-        let maximized_response = ui
-            .add(Button::new(RichText::new("🗗").size(button_height)))
-            .on_hover_text("Maximize window");
-        if maximized_response.clicked() {
-            frame.set_maximized(true);
-        }
-    }
-    let minimized_response = ui
-        .add(Button::new(RichText::new("🗕").size(button_height)))
-        .on_hover_text("Minimize the window");
-    if minimized_response.clicked() {
-        frame.set_minimized(true);
-    }
-}
+} */
+
+/* 
+❌
+🗗  .set_maximized(false / true)
+🗕  .set_minimized(true)
+ */

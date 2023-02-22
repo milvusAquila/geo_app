@@ -63,26 +63,26 @@ impl App for Headlines {
 }
 
 pub struct Root;
-impl Root {
-    pub fn new() -> Root {
-        Root
-    }
-}
 impl App for Root {
-    fn update(&mut self, ctx: &egui::Context, frame: &mut Frame) {
+    fn update(&mut self, ctx: &Context, frame: &mut Frame) {
         TopBottomPanel::top("Menu").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 egui::menu::menu_button(ui, "File", |ui| {
-                    if ui.add(Button::new("New")).clicked() {
-                        // New file
+                    let ctrl_n = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::N };
+                    if ui.add(Button::new("New").shortcut_text(Context::format_shortcut(&ctx, ctrl_n))).on_hover_text("Create a new file").clicked() {
+                        println!("New");
                     }
-                    if ui.add(Button::new("Open")).on_hover_text("Open a file").clicked() {
-                        // Open file
+                    let ctrl_o = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::O };
+                    if ui.add(Button::new("Open").shortcut_text(Context::format_shortcut(&ctx, ctrl_o))).on_hover_text("Open a file").clicked() {
+                        println!("Open");
                     }
-                    if ui.add(Button::new("Save")).clicked() {
-                        // Save file
+                    let ctrl_s = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::S };
+                    if ui.add(Button::new("Save").shortcut_text(Context::format_shortcut(&ctx, ctrl_s))).clicked() {
+                        println!("Save");
                     }
-                    if ui.add(Button::new("Quit")).clicked() {
+                    let ctrl_q = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::Q };
+                    if ui.add(Button::new("Quit").shortcut_text(Context::format_shortcut(&ctx, ctrl_q))).clicked() {
+                        println!("Quit");
                         frame.close()
                     }
                 });
@@ -92,9 +92,15 @@ impl App for Root {
             });
         });
         CentralPanel::default().show(ctx, |ui| {
-            egui::Frame::dark_canvas(ui.style()).show(ui, |_| {
-
+            egui::Frame::dark_canvas(ui.style()).show(ui, |ui| {
+                if ui.input(|ui| ui.key_pressed(Key::S)) {
+                    println!("S");
+                }
             });
         });
+        // let mut shortcut = InputState::default();
+        // if shortcut.consume_shortcut(&KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::B }) {
+        //     println!("ctrl + b");
+        // }
     }
 }
