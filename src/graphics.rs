@@ -1,7 +1,7 @@
 use eframe::{self, App, Frame};
 use egui::*;
 
-const PADDING: f32 = 5.0;
+/* const PADDING: f32 = 5.0;
 pub struct CardData { title: String, desc: String, url: String }
 pub struct Headlines { articles: Vec<CardData> }
 impl Headlines {
@@ -61,14 +61,17 @@ impl App for Headlines {
         });
     }
 }
-
+ */
 pub struct Root;
 impl App for Root {
     fn update(&mut self, ctx: &Context, frame: &mut Frame) {
+        let ctrl_n = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::N };
+        if ctx.input_mut(|ui| ui.consume_shortcut(&ctrl_n)) {
+            println!("Keyboard ctrl + n");
+        }
         TopBottomPanel::top("Menu").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 egui::menu::menu_button(ui, "File", |ui| {
-                    let ctrl_n = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::N };
                     if ui.add(Button::new("New").shortcut_text(Context::format_shortcut(&ctx, ctrl_n))).on_hover_text("Create a new file").clicked() {
                         println!("New");
                     }
@@ -93,10 +96,10 @@ impl App for Root {
         });
         CentralPanel::default().show(ctx, |ui| {
             egui::Frame::dark_canvas(ui.style()).show(ui, |ui| {
-                if ui.input(|ui| ui.key_pressed(Key::S)) {
+            });
+            if ui.input(|ui| ui.key_pressed(Key::S)) {
                     println!("S");
                 }
-            });
         });
         // let mut shortcut = InputState::default();
         // if shortcut.consume_shortcut(&KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::B }) {
