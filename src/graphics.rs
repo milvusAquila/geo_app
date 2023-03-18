@@ -62,31 +62,45 @@ impl App for Headlines {
     }
 }
  */
+pub struct KeyboardSettings {
+    ctrl_n : KeyboardShortcut,
+    ctrl_o : KeyboardShortcut,
+    ctrl_s : KeyboardShortcut,
+    ctrl_q : KeyboardShortcut,
+}
+impl KeyboardSettings {
+    pub fn new() -> KeyboardSettings {
+        KeyboardSettings {
+            ctrl_n : KeyboardShortcut {modifiers: Modifiers::CTRL, key: Key::N},
+            ctrl_o : KeyboardShortcut {modifiers: Modifiers::CTRL, key: Key::O},
+            ctrl_s : KeyboardShortcut {modifiers: Modifiers::CTRL, key: Key::S},
+            ctrl_q : KeyboardShortcut {modifiers: Modifiers::CTRL, key: Key::Q},
+        }
+    }
+}
+
 pub struct Root;
 impl App for Root {
     fn update(&mut self, ctx: &Context, frame: &mut Frame) {
-        let ctrl_n = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::N };
-        if ctx.input_mut(|ui| ui.consume_shortcut(&ctrl_n)) {
+        let k = KeyboardSettings::new();
+        if ctx.input_mut(|ui| ui.consume_shortcut(&k.ctrl_n)) {
             println!("Keyboard ctrl + n");
         }
         TopBottomPanel::top("Menu").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 egui::menu::menu_button(ui, "File", |ui| {
-                    if ui.add(Button::new("New").shortcut_text(Context::format_shortcut(&ctx, ctrl_n))).on_hover_text("Create a new file").clicked() {
+                    if ui.add(Button::new("New").shortcut_text(Context::format_shortcut(&ctx, &k.ctrl_n))).on_hover_text("Create a new file").clicked() {
                         println!("New");
                     }
-                    let ctrl_o = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::O };
-                    if ui.add(Button::new("Open").shortcut_text(Context::format_shortcut(&ctx, ctrl_o))).on_hover_text("Open a file").clicked() {
+                    if ui.add(Button::new("Open").shortcut_text(Context::format_shortcut(&ctx, &k.ctrl_o))).on_hover_text("Open a file").clicked() {
                         println!("Open");
                     }
-                    let ctrl_s = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::S };
-                    if ui.add(Button::new("Save").shortcut_text(Context::format_shortcut(&ctx, ctrl_s))).clicked() {
+                    if ui.add(Button::new("Save").shortcut_text(Context::format_shortcut(&ctx, &k.ctrl_s))).clicked() {
                         println!("Save");
                     }
-                    let ctrl_q = &KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::Q };
-                    if ui.add(Button::new("Quit").shortcut_text(Context::format_shortcut(&ctx, ctrl_q))).clicked() {
+                    if ui.add(Button::new("Quit").shortcut_text(Context::format_shortcut(&ctx, &k.ctrl_q))).clicked() {
                         println!("Quit");
-                        frame.close()
+                        close_app(ctx, frame)
                     }
                 });
                 egui::menu::menu_button(ui, "Edit", |ui| {
@@ -101,9 +115,10 @@ impl App for Root {
                     println!("S");
                 }
         });
-        // let mut shortcut = InputState::default();
-        // if shortcut.consume_shortcut(&KeyboardShortcut { modifiers: Modifiers::CTRL, key: Key::B }) {
-        //     println!("ctrl + b");
-        // }
     }
+}
+pub fn keyboard_manager(ctx: &Context, frame: &mut Frame) {
+}
+pub fn close_app(_ctx: &Context, frame: &mut Frame) {
+    frame.close()
 }
