@@ -7,8 +7,8 @@ mod graphics;
 
 fn main() -> Result<(), eframe::Error> {
     let mut win_option = eframe::NativeOptions::default();
-    win_option.initial_window_size = Some(Vec2::new(600., 800.));
-    eframe::run_native("Geo_app", win_option, Box::new(|_| Box::new(graphics::Root)))
+    win_option.initial_window_size = Some(Vec2::new(1200., 800.));
+    eframe::run_native("Geo_app", win_option, Box::new(|_| Box::new(graphics::Root::default())))
 }
 
 /* fn custom_window_frame(ctx: &egui::Context, frame: &mut eframe::Frame, title: &str, add_contents: impl FnOnce(&mut egui::Ui)) {
